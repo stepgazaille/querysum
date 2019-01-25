@@ -431,12 +431,19 @@ class QuerySumModel(object):
         with tf.variable_scope('l2_regularization'):
             # Find variables to regularize by iterating over all variables and checking if in set. Haven't found way to
             # directly get variables by absolute path.
+            # original code:
+            #l2_regularized_names = {
+            #    'encoder/bidirectional_rnn/fw/gru_cell/gates/weights:0'
+            #    # If used, add additional complete variables names
+            #}
+            # Updated list:
             l2_regularized_names = {
-                'encoder/bidirectional_rnn/fw/gru_cell/gates/weights:0'
-                # If used, add additional complete variables names
+                'encoder/bidirectional_rnn/fw/gru_cell/gates/kernel:0',
             }
             l2_regularized = [variable for variable in tf.trainable_variables() if
                               variable.name in l2_regularized_names]
+            my_list = [tf.nn.l2_loss(variable) for variable in l2_regularized]
+            print(type(my_list[0]))
             l2_loss = 0.001 * tf.add_n([tf.nn.l2_loss(variable) for variable in l2_regularized])
 
             # self.train_loss += l2_loss

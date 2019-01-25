@@ -1,0 +1,7 @@
+name: querysum
+dependencies:
+  - python=3.5
+  - jupyter=1.0.0
+  - pylint
+  - rope
+
